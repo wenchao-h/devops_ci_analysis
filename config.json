@@ -1,0 +1,8 @@
+{
+    "host": "",
+    "port": 3306,
+    "user": "bk_ci",
+    "password": "",
+    "bk_app_code": "",
+    "bk_app_secret": ""
+}
