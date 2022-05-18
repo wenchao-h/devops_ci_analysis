@@ -68,7 +68,7 @@ def get_task_build_summary(top=None, output=None, encode=None, need_csv=None):
     print("top_rows: %s"%top_rows)
     cursor.close()
     client.close()
-    csvfile = os.path.join(output, "10-蓝盾执行次数top%d的插件.csv"%top)
+    csvfile = os.path.join(output, "10-bkci-plugins-build-count-top%d.csv"%top)
     if need_csv:
         with open(csvfile, "w", newline="", encoding=encode) as f:
             writer = csv.writer(f)
@@ -88,7 +88,7 @@ def get_task_build_summary(top=None, output=None, encode=None, need_csv=None):
         if (row == 0):
             cell.set_text_props(fontproperties=FontProperties(weight='bold'))
     ax.set_title("蓝盾执行次数top %d的插件"%top)
-    pngfile = os.path.join(output, "10-蓝盾执行次数top%d的插件.png"%top)
+    pngfile = os.path.join(output, "10-bkci-plugins-build-count-top%d.png"%top)
     plt.savefig(pngfile, dpi=300)
     print("请查看输出结果文件: %s"%output)
 

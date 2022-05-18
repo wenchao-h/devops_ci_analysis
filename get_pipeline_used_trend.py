@@ -100,22 +100,22 @@ def get_pipeline_summary(start=None, end=None, project=None, groupby=None, outpu
     if groupby == "month":
         xlabel = "月份"
         if project:
-            csvfile = os.path.join(output, "1-%s项目流水线每月活跃数.csv"%project)
-            pngfile = os.path.join(output, "1-%s项目流水线每月活跃数.png"%project)
+            csvfile = os.path.join(output, "1-%s-project-active-pipeline-count-monthly.csv"%project)
+            pngfile = os.path.join(output, "1-%s-project-active-pipeline-count-monthly.png"%project)
             title = "%s项目流水线每月活跃数"%project
         else:
-            csvfile = os.path.join(output, "1-蓝盾流水线每月活跃数.csv")
-            pngfile = os.path.join(output, "1-蓝盾流水线每月活跃数.png")
+            csvfile = os.path.join(output, "1-bkci-active-pipeline-count-monthly.csv")
+            pngfile = os.path.join(output, "1-bkci-active-pipeline-count-monthly.png")
             title = "蓝盾流水线每月活跃数"
     elif groupby == "week":
         xlabel = "周"
         if project:
-            csvfile = os.path.join(output, "1-%s项目流水线每周活跃数.csv"%project)
-            pngfile = os.path.join(output, "1-%s项目流水线每周活跃数.png"%project)
+            csvfile = os.path.join(output, "1-%s-project-active-pipeline-count-weekly.csv"%project)
+            pngfile = os.path.join(output, "1-%s-project-active-pipeline-count-weekly.png"%project)
             title = "%s项目流水线每周活跃数"%project
         else:
-            csvfile = os.path.join(output, "1-蓝盾流水线每周活跃数.csv")
-            pngfile = os.path.join(output, "1-蓝盾流水线每周活跃数.png")
+            csvfile = os.path.join(output, "1-bkci-active-pipeline-count-weekly.csv")
+            pngfile = os.path.join(output, "1-bkci-active-pipeline-count-weekly.png")
             title = "蓝盾流水线每周活跃数"
     else:
         print("groupby must be week/month")

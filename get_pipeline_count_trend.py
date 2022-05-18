@@ -65,8 +65,9 @@ def get_pipeline_create_trend(start=None, end=None, groupby=None, project=None, 
         total = total_result[0]
         print(total)
         sql_tpl = "SELECT YEAR(CREATE_TIME) AS YEAR, DATE_FORMAT(CREATE_TIME, '%Y-%m') AS MONTH, COUNT(PIPELINE_ID) AS PIPELINE_CREATED_CNT FROM T_PIPELINE_INFO {WHERE} GROUP BY MONTH ORDER BY MONTH"
-        csvfile = os.path.join(output, "%s项目每月流水线数量变化.csv"%project)
+        csvfile = os.path.join(output, "%s-project-pipeline-count-trend-monthly.csv"%project)
         title = "%s项目每月流水线数量变化"%project
+        pngfile = "2-%s-project-pipeline-count-trend-monthly.png"%project
         xlabel = "月份"
         headers = get_fields_chinese(["YEAR", "MONTH", "PIPELINE_CREATED_CNT"])
             
@@ -74,6 +75,7 @@ def get_pipeline_create_trend(start=None, end=None, groupby=None, project=None, 
             sql_tpl = "SELECT YEAR(CREATE_TIME) AS YEAR, WEEK(CREATE_TIME) as WEEK, COUNT(PIPELINE_ID) AS PIPELINE_CREATED_CNT FROM T_PIPELINE_INFO {WHERE} GROUP BY WEEK ORDER BY WEEK"
             csvfile = os.path.join(output, "%s项目每周流水线数量变化.csv"%project)
             title = "%s项目每周流水线数量变化"%project
+            pngfile = "2-%s-project-pipeline-count-trend-weekly.png"%project
             xlabel = "周"
             headers = get_fields_chinese(["YEAR", "WEEK", "PIPELINE_CREATED_CNT"])
 
@@ -156,21 +158,23 @@ def get_pipeline_create_trend(start=None, end=None, groupby=None, project=None, 
         # ax.set_title(title)
         # ax.legend()
         # plt.xticks(x, labels, rotation=45)
-        pngfile = os.path.join(output, "2-" + title+".png")
+        pngfile = os.path.join(output, pngfile)
         plt.savefig(pngfile, dpi=300)
 
     else:
 
         sql = "SELECT YEAR(CREATE_TIME) AS YEAR, DATE_FORMAT(CREATE_TIME, '%Y-%m') AS MONTH, COUNT(PIPELINE_ID) AS PIPELINE_CREATED_CNT FROM T_PIPELINE_INFO {WHERE} GROUP BY MONTH ORDER BY MONTH"
-        csvfile = os.path.join(output, "2-蓝盾每月流水线数量变化.csv")
+        csvfile = os.path.join(output, "2-bkci-pipeline-count-trend-monthly.csv")
         title = "蓝盾每月流水线数量变化"
+        pngfile = "2-bkci-pipeline-count-trend-monthly.png"
         xlabel = "月份"
         headers = get_fields_chinese(["YEAR", "MONTH", "PIPELINE_CREATED_CNT"])
 
         if groupby == "week":
             sql = "SELECT YEAR(CREATE_TIME) AS YEAR, WEEK(CREATE_TIME) as WEEK,  COUNT(PIPELINE_ID) AS PIPELINE_CREATED_CNT FROM T_PIPELINE_INFO {WHERE} GROUP BY WEEK ORDER BY WEEK"
-            csvfile = os.path.join(output, "2-蓝盾每周流水线数量变化.csv")
+            csvfile = os.path.join(output, "2-bkci-pipeline-count-trend-weekly.csv")
             title = "蓝盾每周流水线数量变化"
+            pngfile = '2-bkci-pipeline-count-trend-monthly.png'
             xlabel = "周"
             headers = get_fields_chinese(["YEAR", "WEEK", "PIPELINE_CREATED_CNT"])
 
@@ -236,7 +240,7 @@ def get_pipeline_create_trend(start=None, end=None, groupby=None, project=None, 
         autolabel(ax, p1)
         autolabel(ax, p2)
         ax.set_title(title)
-        pngfile = os.path.join(output, "2-" + title + ".png")
+        pngfile = os.path.join(output, pngfile)
         plt.savefig(pngfile, dpi=300)
     cursor.close()
     client.close()

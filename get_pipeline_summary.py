@@ -54,15 +54,15 @@ def get_pipeline_summary(days=None, project=None, top=None, count=None, output=N
     # rows = [ (row[0], twp.fill(row[1], 7), row[2], row[3]) for row in rows ]
     headers = ["PROJECT_ID", "PIPELINE_NAME", "LATEST_END_TIME", "NOT_USE_DAYS"]
     headers = get_fields_chinese(headers)
-    csvfile = os.path.join(output, "7-蓝盾最近%d天未使用流水线top%d.csv"%(days, top))
-    pngfile = os.path.join(output, "7-蓝盾最近%d天未使用流水线top%d.png"%(days, top))
+    csvfile = os.path.join(output, "7-bkci-pipeline-not-used-in-%d-days-top%d.csv"%(days, top))
+    pngfile = os.path.join(output, "7-bkci-pipeline-not-used-in-%d-days-top%d.png"%(days, top))
     top_rows = rows[:top]
     title = "蓝盾最近%d天未使用流水线top%d"%(days, top)
     if project:
-        csvfile = os.path.join(output, "7-%s项目最近%d天未使用流水线top%d.csv"%(project, days, top))
+        csvfile = os.path.join(output, "7-%s-project-pipeline-not-used-in-%d-days-top%d.csv"%(project, days, top))
         top_rows = [(row[1], row[2], row[3]) for row in top_rows]
         headers = get_fields_chinese(["PIPELINE_NAME", "LATEST_END_TIME", "NOT_USE_DAYS"])
-        pngfile = os.path.join(output, "7-%s项目最近%d天未使用流水线top%d.png"%(project, days, top))
+        pngfile = os.path.join(output, "7-%s-project-pipeline-not-used-in-%d-days-top%d.png"%(project, days, top))
         title = "%s项目最近%d天未使用流水线top%d"%(project, days, top)
     # else:
     #     csvfile = os.path.join(output, "7-蓝盾最近%d天未使用流水线top%d.csv"%(days, top))

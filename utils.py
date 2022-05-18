@@ -58,7 +58,10 @@ def get_config():
 def mysql_project_client():
     config = get_config()
     client = pymysql.connect(
-        **config,
+        host=config["host"],
+        user=config["user"],
+        port=config["port"],
+        password=config["password"],
         db="devops_ci_project",
         charset='utf8'
     )
@@ -67,7 +70,10 @@ def mysql_project_client():
 def mysql_process_client():
     config = get_config()
     client = pymysql.connect(
-        **config,
+        host=config["host"],
+        user=config["user"],
+        port=config["port"],
+        password=config["password"],
         db="devops_ci_process",
         charset='utf8'
     )
@@ -76,7 +82,10 @@ def mysql_process_client():
 def mysql_store_client():
     config = get_config()
     client = pymysql.connect(
-        **config,
+        host=config["host"],
+        user=config["user"],
+        port=config["port"],
+        password=config["password"],
         db="devops_ci_store",
         charset='utf8'
     )

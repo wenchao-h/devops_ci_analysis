@@ -44,13 +44,13 @@ def get_task_summary(count=False, project=None, output=None, encode=None, need_c
     # rows = list(result)
     rows = [(atom_map.get(row[0], "unknown"), *row) for row in result]
     print("rows: %s"%rows)
-    csvfile = os.path.join(output, "9-蓝盾插件使用情况.csv")
+    csvfile = os.path.join(output, "9-bkci-plugin-use-info.csv")
     title = "蓝盾插件数量"
-    pngfile = os.path.join(output, "9-蓝盾插件数量.png")
+    pngfile = os.path.join(output, "9-bkci-plugin-counts.png")
     if project:
-        csvfile = os.path.join(output, "9-%s项目插件使用情况.csv"%project)
+        csvfile = os.path.join(output, "9-%s-project-plugin-use-info.csv"%project)
         title = "%s项目插件数量"%project
-        pngfile = os.path.join(output, "9-%s项目插件数量.png"%project)
+        pngfile = os.path.join(output, "9-%s-project-plugin-counts.png"%project)
     if need_csv:
         with open(csvfile, "w", newline="", encoding=encode) as f:
             writer = csv.writer(f)
@@ -95,10 +95,10 @@ def get_task_summary(count=False, project=None, output=None, encode=None, need_c
             if (row == 0):
                 cell.set_text_props(fontproperties=FontProperties(weight='bold'))
         title = "插件被流水线使用情况"
-        pngfile = os.path.join(output, "8-插件被蓝盾流水线使用情况.png")
+        pngfile = os.path.join(output, "8-bkci-plugin-use-info.png")
         if project:
             title = "插件被%s项目使用情况"%project
-            pngfile = os.path.join(output, "8-插件被%s项目使用情况.png"%project)
+            pngfile = os.path.join(output, "8-%s-project-plugin-use-info.png"%project)
         ax.set_title(title)
         plt.savefig(pngfile, dpi=300)
     print("请查看输出结果文件: %s"%output)    

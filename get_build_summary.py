@@ -39,7 +39,7 @@ GROUPBY = [
 ]
 
 
-def get_project_build_success(cursor, time_sql, output, project, groupby, encode, title, xlabel, need_csv):
+def get_project_build_success(cursor, time_sql, output, project, groupby, encode, title, filename, xlabel, need_csv):
     plt.rc('font', size=5.79)          # controls default text sizes
     plt.rc('axes', titlesize=10)     # fontsize of the axes title
     plt.rc('axes', labelsize=8)    # fontsize of the x and y labels
@@ -47,7 +47,7 @@ def get_project_build_success(cursor, time_sql, output, project, groupby, encode
     plt.rc('ytick', labelsize=5.79)    # fontsize of the tick labels
     plt.rc('legend', fontsize=10)    # legend fontsize
     plt.rc('figure', titlesize=5.79)  # fontsize of the figure title
-    csvfile = os.path.join(output, "2-%s.csv"%title)
+    csvfile = os.path.join(output, "2-%s.csv"%filename)
     month_headers = get_fields_chinese(["MONTH", "PROJECT_ID", "BUILD_SUCCESS", "BUILD_TOTAL", "BUILD_SUCCESS_RATE"])
     week_headers = get_fields_chinese(["WEEK", "PROJECT_ID", "BUILD_SUCCESS", "BUILD_TOTAL", "BUILD_SUCCESS_RATE"])
     headers = ""
@@ -102,7 +102,7 @@ def get_project_build_success(cursor, time_sql, output, project, groupby, encode
     ax1.set_ylabel("构建次数", color=color1)
     ax2.set_ylabel("构建成功率(%)", color=color2)
 
-    png_path = os.path.join(output, "3-%s.png"%title)
+    png_path = os.path.join(output, "3-%s.png"%filename)
     plt.savefig(png_path, dpi=300)
 
 def get_build_summary(start=None, end=None, dim=None, project=None, top=None, groupby=None, output=None, encode=None, need_csv=None):
@@ -135,12 +135,12 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
             if groupby == "month":
                 # 获取指定项目ID每月构建成功率变化数据
 
-                get_project_build_success(cursor, time_sql, output, project, groupby, encode, "%s项目每月构建情况"%project, "月份", need_csv)
+                get_project_build_success(cursor, time_sql, output, project, groupby, encode, "%s项目每月构建情况"%project, "%s-project-build-summay-monthly"%project, "月份", need_csv)
                 pass
             elif groupby == "week":
                 # 获取指定项目ID每周构建成功率变化数据
 
-                get_project_build_success(cursor, time_sql, output, project, groupby, encode, "%s项目每周构建情况"%project, "周", need_csv)
+                get_project_build_success(cursor, time_sql, output, project, groupby, encode, "%s项目每周构建情况"%project, "%s-project-build-summary-weekly"%project, "周", need_csv)
                 pass
             else:
                 print("groupby需指定month或者week.")
@@ -164,7 +164,7 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
                 result = cursor.fetchall()
                 rows = list(result)
                 rows = [(*row, format(row[1]/row[2]*100, ".1f")) for row in rows]
-                csvfile = os.path.join(output, "3-蓝盾每月流水线构建情况.csv")
+                csvfile = os.path.join(output, "3-bkci-build-summary-monthly.csv")
                 if need_csv:
                     with open(csvfile, "w", newline="", encoding=encode) as f:
                         writer = csv.writer(f)
@@ -195,7 +195,7 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
                 ax1.set_ylabel("构建次数", color=color1)
                 ax2.set_ylabel("构建成功率(%)", color=color2)
 
-                png_path = os.path.join(output, "3-蓝盾每月流水线构建情况.png")
+                png_path = os.path.join(output, "3-bkci-build-summary-monthly.png")
                 plt.savefig(png_path, dpi=300)
                 pass
             elif groupby == "week":
@@ -216,7 +216,7 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
                 rows = [("{year}-{week:02d}".format(year=row[0], week=row[1]), row[2], row[3], format(row[2]/row[3]*100, ".1f")) for row in result]
                 rows.sort(key=lambda row: row[0])
                 print("rows: %s"%rows)
-                csvfile = os.path.join(output, "3-蓝盾每周流水线构建情况.csv")
+                csvfile = os.path.join(output, "3-bkci-build-summary-weekly.csv")
                 if need_csv:
                     with open(csvfile, "w", newline="", encoding=encode) as f:
                         writer = csv.writer(f)
@@ -248,7 +248,7 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
                 ax1.set_ylabel("构建次数", color=color1)
                 ax2.set_ylabel("构建成功率(%)", color=color2)
 
-                png_path = os.path.join(output, "3-蓝盾每周流水线构建情况.png")
+                png_path = os.path.join(output, "3-bkci-build-summary-weekly.png")
                 plt.savefig(png_path, dpi=300)
                 pass
             else:
@@ -267,7 +267,7 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
                 last_row = [("总共", success_total, build_total, format(success_total/build_total*100, ".1f"))]
                 rows.extend(last_row)
                 headers = get_fields_chinese(["PROJECT_ID", "BUILD_SUCCESS", "BUILD_TOTAL", "BUILD_SUCCESS_RATE"])
-                csvfile = os.path.join(output, "5-蓝盾各项目构建情况.csv")
+                csvfile = os.path.join(output, "5-bkci-build-summary-of-projects.csv")
                 if need_csv:
                     with open(csvfile, "w", newline="", encoding=encode) as f:
                         writer = csv.writer(f)
@@ -287,7 +287,7 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
                     if (row == 0):
                         cell.set_text_props(fontproperties=FontProperties(weight='bold'))
                 ax.set_title("蓝盾各项目构建情况")
-                pngfile = os.path.join(output, '5-蓝盾各项目构建情况.png')
+                pngfile = os.path.join(output, '5-bkci-build-summary-of-projects.png')
                 plt.savefig(pngfile, dpi=300)
     elif dim == "pipeline":
         if project:
@@ -311,7 +311,7 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
                 build_top_rows = sorted(rows, key=lambda row: row[3], reverse=True)[:top]
                 selected_rows = [(row[0], row[1], row[3], row[4]) for row in build_top_rows]
                 headers = get_fields_chinese(["PIPELINE_NAME", "BUILD_SUCCESS", "BUILD_TOTAL", "BUILD_SUCCESS_RATE"])
-                csvfile = os.path.join(output, "5-%s项目流水线构建次数top%s.csv"%(proj, top))
+                csvfile = os.path.join(output, "5-%s-project-pipeline-build-count-top%s.csv"%(proj, top))
                 if need_csv:
                     with open(csvfile, "w", newline="", encoding=encode) as f:
                         writer = csv.writer(f)
@@ -331,14 +331,14 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
                     if (row == 0):
                         cell.set_text_props(fontproperties=FontProperties(weight='bold'))
                 ax.set_title("%s项目流水线构建次数top%s"%(proj, top))
-                pngfile = os.path.join(output, "5-%s项目流水线构建次数top%s.png"%(proj, top))
+                pngfile = os.path.join(output, "5-%s-project-pipeline-build-count-top%s.png"%(proj, top))
                 plt.savefig(pngfile, dpi=300)
 
                 # 构建失败率top x
                 failed_top_rows = sorted(rows, key=lambda row: float(row[5]), reverse=True)[:top]
                 selected_rows = [(row[0], row[2], row[3], row[5]) for row in failed_top_rows]
                 headers = get_fields_chinese(["PIPELINE_NAME", "BUILD_FAILED", "BUILD_TOTAL", "BULD_FAILED_RATE"])
-                csvfile = os.path.join(output, "6-%s项目流水线构建失败率top%s.csv"%(proj, top))
+                csvfile = os.path.join(output, "6-%s-project-build-failed-rate-top%s.csv"%(proj, top))
                 if need_csv:
                     with open(csvfile, "w", newline="", encoding=encode) as f:
                         writer = csv.writer(f)
@@ -358,7 +358,7 @@ def get_build_summary(start=None, end=None, dim=None, project=None, top=None, gr
                     if (row == 0):
                         cell.set_text_props(fontproperties=FontProperties(weight='bold'))
                 ax.set_title("%s项目流水线构建失败率top%s"%(proj, top))
-                pngfile = os.path.join(output, "6-%s项目流水线构建失败率top%s.png"%(proj, top))
+                pngfile = os.path.join(output, "6-%s-project-build-failed-rate-top%s.png"%(proj, top))
                 plt.savefig(pngfile, dpi=300)
                 
 

@@ -12,7 +12,7 @@ import natsort
 
 from utils import get_config
 
-def send_mail(mail_list=None, png_dir=None, project=None, report_type=None):
+def send_mail(mail_list=None, png_dir=None, project=None, report_type=None, need_csv=False):
     print(mail_list)
     print(png_dir)
     print(project)
@@ -50,8 +50,22 @@ def send_mail(mail_list=None, png_dir=None, project=None, report_type=None):
             "filename": file_basename,
             "content": filecontent.decode('utf-8'),
             "content_id": file_basename,
+            "deposition": "inline",
         }    
         attachments.append(attachment)
+    
+    if need_csv:
+        csv_abs_filenames = natsort.natsorted(glob.glob(os.path.join(png_path ,"*.csv")))
+        for filename in csv_abs_filenames:
+            filecontent = base64.b64encode(open(filename, "rb").read())
+            file_basename = os.path.basename(filename)
+            attachment = {
+                "filename": file_basename,
+                "content": filecontent.decode('utf-8'),
+                "content_id": file_basename,
+                "deposition": "attachment",
+            }    
+            attachments.append(attachment)
         
     url = "http://paas.service.consul/api/c/compapi/cmsi/send_mail/"
     content_tpl = """
@@ -134,6 +148,7 @@ def send_mail(mail_list=None, png_dir=None, project=None, report_type=None):
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     content = Template(content_tpl).safe_substitute(color=color, title=title, now=now, type=report_type, num=num)
     # print(content)
+    
     config = get_config()
     data = {
         "bk_app_code": config["bk_app_code"],
@@ -157,7 +172,8 @@ if __name__ == "__main__":
     parser.add_argument("-w", "--workspace", help="图片存放目录", required=True)
     parser.add_argument("-p", "--project", help="项目ID", default=None)
     parser.add_argument("-t", "--type", help="周/月报", default="周")
+    parser.add_argument("-x", "--csv", help="是否发送csv文件", action="store_true")
     # parser.add_argument("-n", "--num", help="x月份/第x周", required=True)
     args = parser.parse_args()
 
-    send_mail(mail_list=args.join, png_dir=args.workspace, project=args.project, report_type=args.type)
+    send_mail(mail_list=args.join, png_dir=args.workspace, project=args.project, report_type=args.type, need_csv=args.csv)

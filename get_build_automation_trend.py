@@ -94,27 +94,27 @@ def get_build_automation_trend(start=None, end=None, project=None,  groupby=None
     if groupby == "month":
         headers = get_fields_chinese(["YEAR", "MONTH", "TRIGGER", "BUILD_CNT"])
         if project:
-            csvfile = os.path.join(output, "4-%s项目每月构建自动化趋势.csv"%project)
-            pngfile = os.path.join(output, "4-%s项目每月构建自动化趋势.png"%project)
+            csvfile = os.path.join(output, "4-%s-project-build-automation-monthly.csv"%project)
+            pngfile = os.path.join(output, "4-%s-project-build-automation-monthly.png"%project)
             xlabel = "月份"
             title = "%s项目每月构建自动化趋势"%project
             
         else:
-            csvfile = os.path.join(output, "4-蓝盾每月构建自动化趋势.csv")
-            pngfile = os.path.join(output, "4-蓝盾每月构建自动化趋势.png")
+            csvfile = os.path.join(output, "4-bkci-build-automation-monthly.csv")
+            pngfile = os.path.join(output, "4-bkci-build-automation-monthly.png")
             xlabel = "月份"
             title = "蓝盾每月构建自动化趋势"
     
     elif groupby == "week":
         headers = get_fields_chinese(["YEAR", "WEEK", "TRIGGER", "BUILD_CNT"])
         if project:
-            csvfile = os.path.join(output, "4-%s项目每周构建自动化趋势.csv"%project)
-            pngfile = os.path.join(output, "4-%s项目每周构建自动化趋势.png"%project)
+            csvfile = os.path.join(output, "4-%s-project-build-automation-weekly.csv"%project)
+            pngfile = os.path.join(output, "4-%s-project-build-automation-weekly.png"%project)
             xlabel = "周"
             title = "%s项目每周构建自动化趋势"%project
         else:
-            csvfile = os.path.join(output, "4-蓝盾每周构建自动化趋势.csv")
-            pngfile = os.path.join(output, "4-蓝盾每周构建自动化趋势.png")
+            csvfile = os.path.join(output, "4-bkci-build-automation-weekly.csv")
+            pngfile = os.path.join(output, "4-bkci-build-automation-weekly.png")
             xlabel = "周"
             title = "蓝盾每周构建自动化趋势"
     
