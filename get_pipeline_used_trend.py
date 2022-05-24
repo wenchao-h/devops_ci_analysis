@@ -4,6 +4,7 @@ import csv
 import datetime
 import os
 import math
+import sys
 # import textwrap as twp
 # from dateutil.relativedelta import relativedelta
 
@@ -65,7 +66,7 @@ def get_pipeline_summary(start=None, end=None, project=None, groupby=None, outpu
         pass
     else:
         print("groupby must be week/month")
-        os.exist(1)
+        sys.exit(1)
     where_sql = time_sql
     if project:
         where_sql = [" PROJECT_ID = '%s' "%project] + time_sql
@@ -119,7 +120,7 @@ def get_pipeline_summary(start=None, end=None, project=None, groupby=None, outpu
             title = "蓝盾流水线每周活跃数"
     else:
         print("groupby must be week/month")
-        os.exist(1)
+        sys.exit(1)
     if need_csv:
         with open(csvfile, "w", newline="", encoding=encode) as f:
             writer = csv.writer(f)

@@ -2,7 +2,6 @@ import requests
 import json
 import os
 import base64
-import sys
 import glob
 from string import Template
 import sys
@@ -163,8 +162,19 @@ def send_mail(mail_list=None, png_dir=None, project=None, report_type=None, need
     # print(data)
     headers = {"Content-Type": "application/json"}
     resp = requests.post(url, headers=headers, data=json.dumps(data))
+    if resp.status_code != 200:
+        print("requests failed: %s"%resp.content)
+        sys.exit(1)
+    else:
+        resp_j = json.loads(resp.content)
+        code = resp_j["code"]
+        if code != 0:
+            print(resp_j)
+            sys.exit(1)
+        else:
+            print(resp_j)
     # print(resp.content)
-    print(json.loads(resp.content))
+    # print(json.loads(resp.content))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="邮件发送")
