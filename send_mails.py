@@ -49,7 +49,8 @@ def send_mail(mail_list=None, png_dir=None, project=None, report_type=None, need
             "filename": file_basename,
             "content": filecontent.decode('utf-8'),
             "content_id": file_basename,
-            "deposition": "inline",
+            "disposition": "inline",
+            "type": "png"
         }    
         attachments.append(attachment)
     
@@ -62,7 +63,7 @@ def send_mail(mail_list=None, png_dir=None, project=None, report_type=None, need
                 "filename": file_basename,
                 "content": filecontent.decode('utf-8'),
                 "content_id": file_basename,
-                "deposition": "attachment",
+                "disposition": "attachment",
             }    
             attachments.append(attachment)
         
